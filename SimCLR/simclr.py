@@ -12,6 +12,10 @@ import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 from mpl_toolkits import mplot3d
+from sklearn.manifold import TSNE
+from numpy import reshape
+import seaborn as sns
+import pandas as pd
 
 torch.manual_seed(0)
 
@@ -120,11 +124,13 @@ class SimCLR(object):
                         #print(torch.cuda.memory_stats(device="cuda:0")['allocated.all.peak'])
                         #print("loss: ",loss)
                 if(np.sum(counter) == 1000):
-                    fig = plt.figure()
+                    # fig = plt.figure()
                     ax = plt.axes(projection='3d')
+                    tsne = TSNE(n_components=3)
                     normalized_features = new_features.cpu().numpy()
-                    #new_features = features.cpu().numpy()
-                    principalComponents = pca.fit_transform(normalized_features)
+                    # new_features = features.cpu().numpy()
+                    # principalComponents = pca.fit_transform(normalized_features)
+                    principalComponents = tsne.fit_transform(normalized_features)
                     principalComps = []
                     for color in colors:
                         for i in range(len(new_labels)):
@@ -138,6 +144,13 @@ class SimCLR(object):
                             z_arr = np.array(principalComps[:,2])
                             ax.scatter3D(x_arr,y_arr,z_arr,c = color)
                         principalComps = []
+
+                    # df = pd.DataFrame()
+                    # df["y"] = new_labels
+                    # df["comp-1"] = z[:,0]
+                    # df["comp-2"] = z[:,1]
+                    #
+                    # sns.scatterplot(x="comp-1", y="comp-2", hue=df.y.tolist(), palette=sns.color_palette("hls", 10), data=df).set(title="XYZ")
                     plt.show()
                     break
                 """
