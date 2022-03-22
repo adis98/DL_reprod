@@ -206,10 +206,3 @@ def resnet50x2(**kwargs):
 
 def resnet50x4(**kwargs):
     return ResNet(Bottleneck, [3, 4, 6, 3], width_mult=4)
-"""
-if __name__ == '__main__':
-    model = resnet50x4()
-    ckp_path = "C:/Users/adity/Documents/Course_stuff/Deep Learning/project/resnet50_4x.pth"
-    print(torch.cuda.is_available())
-    sd = torch.load(ckp_path, map_location='cpu')
-    model.load_state_dict(sd["state_dict"])"""

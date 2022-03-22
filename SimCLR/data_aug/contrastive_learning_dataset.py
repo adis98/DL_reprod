@@ -27,7 +27,7 @@ class ContrastiveLearningDataset:
     def get_dataset(self, name, n_views):
         valid_datasets = {'cifar10': lambda: datasets.CIFAR10(self.root_folder, train=True,
                                                               transform=ContrastiveLearningViewGenerator(
-                                                                  self.get_simclr_pipeline_transform(224), #change made for ResNet50x4 to work
+                                                                  self.get_simclr_pipeline_transform(32), #change made for ResNet50x4 to work
                                                                   n_views),
                                                               download=True),
 

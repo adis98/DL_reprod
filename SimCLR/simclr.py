@@ -1,7 +1,7 @@
 import logging
 import os
 import sys
-
+import numpy as np
 import torch
 import torch.nn.functional as F
 from torch.cuda.amp import GradScaler, autocast
@@ -9,6 +9,9 @@ from torch.utils.tensorboard import SummaryWriter
 from tqdm import tqdm
 from utils import save_config_file, accuracy, save_checkpoint
 import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+from mpl_toolkits import mplot3d
 
 torch.manual_seed(0)
 
@@ -67,29 +70,77 @@ class SimCLR(object):
         logging.info(f"Training with gpu: {self.args.disable_cuda}.")
 
         for epoch_counter in range(self.args.epochs):
+            counter = np.zeros(10)
+            new_features = None
+            new_labels = None
+            pca = PCA(n_components=3)
+            colors = ['blue','orange','green','red','purple','brown','pink','gray','olive','cyan']
             for images, labels in tqdm(train_loader):
                 images = torch.cat(images, dim=0)
-                for i in range(len(labels)):
-                    if(labels[i] == 5):
-                        plt.imshow(images[i].permute(1,2,0))
-                        plt.show()
-                        plt.imshow(images[len(labels) + i].permute(1,2,0))
-                        plt.show()
-                        break
+                #for i in range(len(labels)):
+                    #if(labels[i] == 5):
+                        #plt.imshow(images[i].permute(1,2,0))
+                        #plt.show()
+                        #plt.imshow(images[len(labels) + i].permute(1,2,0))
+                        #plt.show()
+                        #break
+                for lab in labels:
+                    if(counter[lab] < 100):
+                        counter[lab] +=1
                 images = images.to(self.args.device)
-                print(torch.cuda.is_available())
+                # print(torch.cuda.is_available())
                 with autocast(enabled=self.args.fp16_precision):
-                    features = self.model(images)
-                    print(features.shape)
+                    with torch.no_grad():
+                        features = self.model(images)
+                        labels_mod = torch.cat((labels,labels),dim=0)
+
+                        if(new_features is not None):
+                            new_features = torch.cat((new_features,features),dim=0)
+                            new_labels = torch.cat((new_labels,labels_mod),dim=0)
+                        else:
+                            new_features = features
+                            new_labels = labels_mod
+
+                        #print(principalComponents.shape)
+
+                        # new_features = features.cpu().numpy()
+                        # principalComponents = pca.fit_transform(new_features)
+                        #
+                        # principalComps = []
+                        # for color in colors:
+                        #     for i in range(len(labels_mod)):
+                        #         if(labels_mod[i] == colors.index(color)):
+                        #             principalComps.append(principalComponents[i])
+                        #     if(len(principalComps) != 0):
+                        #         plt.scatter(principalComps[:][0],principalComps[:][1],c = color)
+                        #     principalComps = []
+
+                        #logits, labels = self.info_nce_loss(features)
+                        #loss = self.criterion(logits, labels)
+                        #print(torch.cuda.memory_stats(device="cuda:0")['allocated.all.peak'])
+                        #print("loss: ",loss)
+                if(np.sum(counter) == 1000):
+                    fig = plt.figure()
+                    ax = plt.axes(projection='3d')
+                    normalized_features = new_features.cpu().numpy()
+                    #new_features = features.cpu().numpy()
+                    principalComponents = pca.fit_transform(normalized_features)
+                    principalComps = []
+                    for color in colors:
+                        for i in range(len(new_labels)):
+                            if(new_labels[i] == colors.index(color)):
+                                principalComps.append(principalComponents[i])
+                        principalComps = np.array(principalComps)
+
+                        if(len(principalComps) != 0):
+                            x_arr  = np.array(principalComps[:,0])
+                            y_arr = np.array(principalComps[:,1])
+                            z_arr = np.array(principalComps[:,2])
+                            ax.scatter3D(x_arr,y_arr,z_arr,c = color)
+                        principalComps = []
+                    plt.show()
                     break
-                    """
-                    logits, labels = self.info_nce_loss(features)
-                    loss = self.criterion(logits, labels)
-                    #print(logits)
-                    print(labels)
-
-
-
+                """
                 self.optimizer.zero_grad()
 
                 scaler.scale(loss).backward()
@@ -111,9 +162,9 @@ class SimCLR(object):
                 self.scheduler.step()
             logging.debug(f"Epoch: {epoch_counter}\tLoss: {loss}\tTop1 accuracy: {top1[0]}")
 
-        logging.info("Training has finished.")"""
+        logging.info("Training has finished.")
         # save model checkpoints
-        """
+
         checkpoint_name = 'checkpoint_{:04d}.pth.tar'.format(self.args.epochs)
         save_checkpoint({
             'epoch': self.args.epochs,

@@ -6,6 +6,7 @@ from data_aug.contrastive_learning_dataset import ContrastiveLearningDataset
 from models.resnet_simclr import ResNetSimCLR
 import models.resnet_wider as res
 from simclr import SimCLR
+import os
 
 model_names = sorted(name for name in models.__dict__
                      if name.islower() and not name.startswith("__")
@@ -72,12 +73,14 @@ def main():
         train_dataset, batch_size=args.batch_size, shuffle=True,
         num_workers=args.workers, pin_memory=True, drop_last=True)
 
-
+    # os.environ["PYTORCH_CUDA_ALLOC_CONF"]='max_split_size_mb:64'
     #model = ResNetSimCLR(base_model=args.arch, out_dim=args.out_dim) removed to load the new architecture model- resnet50 4x
-    model = res.resnet50x4()
-    ckp_path = "C:/Users/adity/Documents/Course_stuff/Deep Learning/project/resnet50_4x.pth"
+    model = res.resnet50x1()
+
+    ckp_path = 'C:/Users/adity/Documents/Course_stuff/Deep Learning/project/PyTorch_checkpoints/resnet_50_1x.pth'
     #print(torch.cuda.is_available())
     sd = torch.load(ckp_path, map_location='cpu')
+    model.load_state_dict(sd['state_dict'])
 
     optimizer = torch.optim.Adam(model.parameters(), args.lr, weight_decay=args.weight_decay)
 
