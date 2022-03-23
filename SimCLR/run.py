@@ -7,6 +7,7 @@ from models.resnet_simclr import ResNetSimCLR
 import models.resnet_wider as res
 from simclr import SimCLR
 import os
+import torch.nn as nn
 
 model_names = sorted(name for name in models.__dict__
                      if name.islower() and not name.startswith("__")
@@ -78,9 +79,13 @@ def main():
     model = res.resnet50x1()
 
     #ckp_path = 'C:/Users/adity/Documents/Course_stuff/Deep Learning/project/sthalles_simclr/SimCLR/runs/Mar16_14-04-02_LAPTOP-24AE201Q/checkpoint_0050.pth.tar'
-    ckp_path = 'C:/Users/adity/Documents/Course_stuff/Deep Learning/project/PyTorch_checkpoints/resnet_50_1x.pth'
+    #ckp_path = 'C:/Users/adity/Documents/Course_stuff/Deep Learning/project/PyTorch_checkpoints/resnet_50_1x.pth'
+    ckp_path = 'C:/Users/adity/Documents/Course_stuff/Deep Learning/project/PyTorch_checkpoints/resnet50_1x_50_epochs_finetuned/checkpoint_0050.pth.tar'
     #print(torch.cuda.is_available())
     sd = torch.load(ckp_path, map_location='cpu')
+    #model.load_state_dict(sd['state_dict'])
+    #add the projection head. Output is 128-dimension
+    model.fc = nn.Sequential(model.fc,nn.ReLU(),nn.Linear(1000,128))
     model.load_state_dict(sd['state_dict'])
 
     optimizer = torch.optim.Adam(model.parameters(), args.lr, weight_decay=args.weight_decay)

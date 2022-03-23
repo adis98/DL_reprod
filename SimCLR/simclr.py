@@ -77,7 +77,6 @@ class SimCLR(object):
             counter = np.zeros(10)
             new_features = None
             new_labels = None
-            pca = PCA(n_components=3)
             colors = ['blue','orange','green','red','purple','brown','pink','gray','olive','cyan']
             for images, labels in tqdm(train_loader):
                 images = torch.cat(images, dim=0)
@@ -119,14 +118,14 @@ class SimCLR(object):
                         #         plt.scatter(principalComps[:][0],principalComps[:][1],c = color)
                         #     principalComps = []
 
-                        #logits, labels = self.info_nce_loss(features)
-                        #loss = self.criterion(logits, labels)
+                        logits, labels = self.info_nce_loss(features)
+                        loss = self.criterion(logits, labels)
                         #print(torch.cuda.memory_stats(device="cuda:0")['allocated.all.peak'])
                         #print("loss: ",loss)
                 if(np.sum(counter) == 1000):
                     # fig = plt.figure()
                     ax = plt.axes(projection='3d')
-                    tsne = TSNE(n_components=3)
+                    tsne = PCA(n_components=3)
                     normalized_features = new_features.cpu().numpy()
                     # new_features = features.cpu().numpy()
                     # principalComponents = pca.fit_transform(normalized_features)
