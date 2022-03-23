@@ -75,9 +75,9 @@ def main():
 
     # os.environ["PYTORCH_CUDA_ALLOC_CONF"]='max_split_size_mb:64'
     #model = ResNetSimCLR(base_model=args.arch, out_dim=args.out_dim) removed to load the new architecture model- resnet50 4x
-    model = res.resnet50x1()
+    model = res.resnet50x4()
 
-    ckp_path = 'C:/Users/adity/Documents/Course_stuff/Deep Learning/project/PyTorch_checkpoints/resnet_50_1x.pth'
+    ckp_path = 'C:/Users/Pietro/Documents/DELFT/courses/DL/DL_reprod/checkpoints/checkpoint_0050.pth.tar'
     #print(torch.cuda.is_available())
     sd = torch.load(ckp_path, map_location='cpu')
     model.load_state_dict(sd['state_dict'])
