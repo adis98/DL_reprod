@@ -1,0 +1,11 @@
+SimCLR/runs
+SimCLR/myenv
+SimCLR/datasets
+/checkpoints
+/.ipynb_checkpoints
+*\__pycache__
+*\cifar-10-batches-py
+*.pyc
+*.meta
+*.log
+*.ipynb

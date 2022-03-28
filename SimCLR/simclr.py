@@ -126,7 +126,7 @@ class SimCLR(object):
                         # print("loss: ",loss)
 
                 if(np.sum(counter) == 1000):
-                    return new_features.cpu().numpy()
+                    return new_features.cpu().numpy(),new_labels 
                     scaler = StandardScaler()
 
                     fig = plt.figure()
