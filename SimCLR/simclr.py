@@ -123,33 +123,21 @@ class SimCLR(object):
                         #print(torch.cuda.memory_stats(device="cuda:0")['allocated.all.peak'])
                         #print("loss: ",loss)
                 if(np.sum(counter) == 1000):
-                    # fig = plt.figure()
-                    ax = plt.axes(projection='3d')
-                    tsne = PCA(n_components=3)
                     normalized_features = new_features.cpu().numpy()
-                    # new_features = features.cpu().numpy()
-                    # principalComponents = pca.fit_transform(normalized_features)
-                    principalComponents = tsne.fit_transform(normalized_features)
-                    principalComps = []
-                    for color in colors:
-                        for i in range(len(new_labels)):
-                            if(new_labels[i] == colors.index(color)):
-                                principalComps.append(principalComponents[i])
-                        principalComps = np.array(principalComps)
-
-                        if(len(principalComps) != 0):
-                            x_arr  = np.array(principalComps[:,0])
-                            y_arr = np.array(principalComps[:,1])
-                            z_arr = np.array(principalComps[:,2])
-                            ax.scatter3D(x_arr,y_arr,z_arr,c = color)
-                        principalComps = []
-
-                    # df = pd.DataFrame()
+                    pca_50 = PCA(n_components=50)
+                    pca_result_50 = pca_50.fit_transform(normalized_features)
+                    # print('Cumulative explained variation for 50 principal components: {}'.format(np.sum(pca_50.explained_variance_ratio_)))
+                    tsne = TSNE(n_components=2, verbose=0, perplexity=40, n_iter=300)
+                    tsne_pca_results = tsne.fit_transform(pca_result_50)
+                    
+                    df = pd.DataFrame()
                     # df["y"] = new_labels
-                    # df["comp-1"] = z[:,0]
-                    # df["comp-2"] = z[:,1]
-                    #
-                    # sns.scatterplot(x="comp-1", y="comp-2", hue=df.y.tolist(), palette=sns.color_palette("hls", 10), data=df).set(title="XYZ")
+                    df["comp-1"] = tsne_pca_results[:,0]
+                    df["comp-2"] = tsne_pca_results[:,1]
+                    sns.scatterplot(x="comp-1", y="comp-2", hue=new_labels, palette=sns.color_palette("hls", 10), data=df).set(title="TSNE on 50 PCA components")
+
+                    images_dir = '/content/gdrive/My Drive/TU_Delft_DST/DL_reprod'
+                    plt.savefig(f"{images_dir}/abc.png")
                     plt.show()
                     break
                 """
