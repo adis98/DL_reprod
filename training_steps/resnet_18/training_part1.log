@@ -1,0 +1,54 @@
+INFO:root:Start SimCLR training for 50 epochs.
+INFO:root:Training with gpu: False.
+DEBUG:root:Epoch: 0	Loss: 6.1939697265625	Top1 accuracy: 0.68359375
+DEBUG:root:Epoch: 1	Loss: 5.781758785247803	Top1 accuracy: 1.85546875
+DEBUG:root:Epoch: 2	Loss: 5.77778959274292	Top1 accuracy: 6.8359375
+DEBUG:root:Epoch: 3	Loss: 5.481211185455322	Top1 accuracy: 9.47265625
+DEBUG:root:Epoch: 4	Loss: 5.19811487197876	Top1 accuracy: 11.9140625
+DEBUG:root:Epoch: 5	Loss: 4.983517169952393	Top1 accuracy: 12.5
+DEBUG:root:Epoch: 6	Loss: 4.998513698577881	Top1 accuracy: 15.234375
+DEBUG:root:Epoch: 7	Loss: 5.018844127655029	Top1 accuracy: 16.40625
+DEBUG:root:Epoch: 8	Loss: 4.6236724853515625	Top1 accuracy: 20.1171875
+DEBUG:root:Epoch: 9	Loss: 4.776905059814453	Top1 accuracy: 25.1953125
+DEBUG:root:Epoch: 10	Loss: 4.1796040534973145	Top1 accuracy: 20.80078125
+DEBUG:root:Epoch: 11	Loss: 4.659685134887695	Top1 accuracy: 23.33984375
+DEBUG:root:Epoch: 12	Loss: 4.506223678588867	Top1 accuracy: 28.515625
+DEBUG:root:Epoch: 13	Loss: 4.28641414642334	Top1 accuracy: 26.66015625
+DEBUG:root:Epoch: 14	Loss: 4.085102081298828	Top1 accuracy: 28.90625
+DEBUG:root:Epoch: 15	Loss: 4.440674781799316	Top1 accuracy: 27.1484375
+DEBUG:root:Epoch: 16	Loss: 4.120687484741211	Top1 accuracy: 25.5859375
+DEBUG:root:Epoch: 17	Loss: 4.269384860992432	Top1 accuracy: 29.98046875
+DEBUG:root:Epoch: 18	Loss: 3.967768907546997	Top1 accuracy: 32.91015625
+DEBUG:root:Epoch: 19	Loss: 4.051486492156982	Top1 accuracy: 32.6171875
+DEBUG:root:Epoch: 20	Loss: 3.7403669357299805	Top1 accuracy: 34.765625
+DEBUG:root:Epoch: 21	Loss: 3.9076192378997803	Top1 accuracy: 36.62109375
+DEBUG:root:Epoch: 22	Loss: 4.011511325836182	Top1 accuracy: 33.3984375
+DEBUG:root:Epoch: 23	Loss: 3.6448934078216553	Top1 accuracy: 33.10546875
+DEBUG:root:Epoch: 24	Loss: 3.729996919631958	Top1 accuracy: 35.3515625
+DEBUG:root:Epoch: 25	Loss: 3.9196248054504395	Top1 accuracy: 34.5703125
+DEBUG:root:Epoch: 26	Loss: 3.7992424964904785	Top1 accuracy: 34.66796875
+DEBUG:root:Epoch: 27	Loss: 3.8165085315704346	Top1 accuracy: 34.86328125
+DEBUG:root:Epoch: 28	Loss: 3.7989914417266846	Top1 accuracy: 39.55078125
+DEBUG:root:Epoch: 29	Loss: 3.4983067512512207	Top1 accuracy: 36.62109375
+DEBUG:root:Epoch: 30	Loss: 3.8071141242980957	Top1 accuracy: 38.96484375
+DEBUG:root:Epoch: 31	Loss: 3.4756319522857666	Top1 accuracy: 36.9140625
+DEBUG:root:Epoch: 32	Loss: 3.4956586360931396	Top1 accuracy: 38.37890625
+DEBUG:root:Epoch: 33	Loss: 3.6855385303497314	Top1 accuracy: 38.37890625
+DEBUG:root:Epoch: 34	Loss: 3.498866081237793	Top1 accuracy: 38.28125
+DEBUG:root:Epoch: 35	Loss: 3.3204238414764404	Top1 accuracy: 37.59765625
+DEBUG:root:Epoch: 36	Loss: 3.3592443466186523	Top1 accuracy: 40.625
+DEBUG:root:Epoch: 37	Loss: 3.242182731628418	Top1 accuracy: 39.55078125
+DEBUG:root:Epoch: 38	Loss: 3.525700807571411	Top1 accuracy: 41.9921875
+DEBUG:root:Epoch: 39	Loss: 2.967359781265259	Top1 accuracy: 40.625
+DEBUG:root:Epoch: 40	Loss: 3.435847282409668	Top1 accuracy: 40.234375
+DEBUG:root:Epoch: 41	Loss: 3.2194151878356934	Top1 accuracy: 41.6015625
+DEBUG:root:Epoch: 42	Loss: 3.267083168029785	Top1 accuracy: 44.7265625
+DEBUG:root:Epoch: 43	Loss: 3.0498621463775635	Top1 accuracy: 44.82421875
+DEBUG:root:Epoch: 44	Loss: 3.1329238414764404	Top1 accuracy: 44.140625
+DEBUG:root:Epoch: 45	Loss: 3.4655702114105225	Top1 accuracy: 43.75
+DEBUG:root:Epoch: 46	Loss: 3.1771299839019775	Top1 accuracy: 42.67578125
+DEBUG:root:Epoch: 47	Loss: 3.1264448165893555	Top1 accuracy: 46.38671875
+DEBUG:root:Epoch: 48	Loss: 3.1387698650360107	Top1 accuracy: 41.6015625
+DEBUG:root:Epoch: 49	Loss: 2.928638458251953	Top1 accuracy: 45.60546875
+INFO:root:Training has finished.
+INFO:root:Model checkpoint and metadata has been saved at runs\Mar16_09-39-25_LAPTOP-24AE201Q.
