@@ -74,85 +74,52 @@ class SimCLR(object):
         logging.info(f"Training with gpu: {self.args.disable_cuda}.")
 
         for epoch_counter in range(self.args.epochs):
-            counter = np.zeros(10)
-            new_features = None
-            new_labels = None
-            colors = ['blue','orange','green','red','purple','brown','pink','gray','olive','cyan']
+            # counter = np.zeros(10) UNCOMMENT FOR PCA/TSNE
+            # new_features = None
+            # new_labels = None
+            # colors = ['blue','orange','green','red','purple','brown','pink','gray','olive','cyan']
             for images, labels in tqdm(train_loader):
                 images = torch.cat(images, dim=0)
-                #for i in range(len(labels)):
-                    #if(labels[i] == 5):
-                        #plt.imshow(images[i].permute(1,2,0))
-                        #plt.show()
-                        #plt.imshow(images[len(labels) + i].permute(1,2,0))
-                        #plt.show()
-                        #break
-                for lab in labels:
-                    if(counter[lab] < 100):
-                        counter[lab] +=1
+                # for lab in labels:           UNCOMMENT THESE LINES FOR PCA/TSNE
+                #     if(counter[lab] < 100):
+                #         counter[lab] +=1
                 images = images.to(self.args.device)
-                # print(torch.cuda.is_available())
                 with autocast(enabled=self.args.fp16_precision):
-                    with torch.no_grad():
+                    # with torch.no_grad(): UNCOMMENT THIS FOR PCA/TSNE
                         features = self.model(images)
-                        labels_mod = torch.cat((labels,labels),dim=0)
+                        # labels_mod = torch.cat((labels,labels),dim=0) UNCOMMENT THIS LINE FOR PCA/TSNE
 
-                        if(new_features is not None):
-                            new_features = torch.cat((new_features,features),dim=0)
-                            new_labels = torch.cat((new_labels,labels_mod),dim=0)
-                        else:
-                            new_features = features
-                            new_labels = labels_mod
-
-                        #print(principalComponents.shape)
-
-                        # new_features = features.cpu().numpy()
-                        # principalComponents = pca.fit_transform(new_features)
-                        #
-                        # principalComps = []
-                        # for color in colors:
-                        #     for i in range(len(labels_mod)):
-                        #         if(labels_mod[i] == colors.index(color)):
-                        #             principalComps.append(principalComponents[i])
-                        #     if(len(principalComps) != 0):
-                        #         plt.scatter(principalComps[:][0],principalComps[:][1],c = color)
-                        #     principalComps = []
+                        # if(new_features is not None): UNCOMMENT THESE LINES FOR PCA/TSNE
+                        #     new_features = torch.cat((new_features,features),dim=0)
+                        #     new_labels = torch.cat((new_labels,labels_mod),dim=0)
+                        # else:
+                        #     new_features = features
+                        #     new_labels = labels_mod
 
                         logits, labels = self.info_nce_loss(features)
                         loss = self.criterion(logits, labels)
-                        #print(torch.cuda.memory_stats(device="cuda:0")['allocated.all.peak'])
-                        #print("loss: ",loss)
-                if(np.sum(counter) == 1000):
-                    # fig = plt.figure()
-                    ax = plt.axes(projection='3d')
-                    tsne = PCA(n_components=3)
-                    normalized_features = new_features.cpu().numpy()
-                    # new_features = features.cpu().numpy()
-                    # principalComponents = pca.fit_transform(normalized_features)
-                    principalComponents = tsne.fit_transform(normalized_features)
-                    principalComps = []
-                    for color in colors:
-                        for i in range(len(new_labels)):
-                            if(new_labels[i] == colors.index(color)):
-                                principalComps.append(principalComponents[i])
-                        principalComps = np.array(principalComps)
+                # if(np.sum(counter) == 1000): //UNCOMMENT THESE LINES FOR PCA/TSNE
+                #     # fig = plt.figure()
+                #     ax = plt.axes(projection='3d')
+                #     tsne_or_pca = PCA(n_components=3) #this can be changed to PCA or TSNE depending on what you want
+                #     normalized_features = new_features.cpu().numpy()
+                #     principalComponents = tsne_or_pca.fit_transform(normalized_features)
+                #     principalComps = []
+                #     for color in colors:
+                #         for i in range(len(new_labels)):
+                #             if(new_labels[i] == colors.index(color)):
+                #                 principalComps.append(principalComponents[i])
+                #         principalComps = np.array(principalComps)
+                #
+                #         if(len(principalComps) != 0):
+                #             x_arr  = np.array(principalComps[:,0])
+                #             y_arr = np.array(principalComps[:,1])
+                #             z_arr = np.array(principalComps[:,2])
+                #             ax.scatter3D(x_arr,y_arr,z_arr,c = color)
+                #         principalComps = []
+                #     plt.show()
+                #     break
 
-                        if(len(principalComps) != 0):
-                            x_arr  = np.array(principalComps[:,0])
-                            y_arr = np.array(principalComps[:,1])
-                            z_arr = np.array(principalComps[:,2])
-                            ax.scatter3D(x_arr,y_arr,z_arr,c = color)
-                        principalComps = []
-
-                    # df = pd.DataFrame()
-                    # df["y"] = new_labels
-                    # df["comp-1"] = z[:,0]
-                    # df["comp-2"] = z[:,1]
-                    #
-                    # sns.scatterplot(x="comp-1", y="comp-2", hue=df.y.tolist(), palette=sns.color_palette("hls", 10), data=df).set(title="XYZ")
-                    plt.show()
-                    break
-                """
                 self.optimizer.zero_grad()
 
                 scaler.scale(loss).backward()
@@ -184,4 +151,4 @@ class SimCLR(object):
             'state_dict': self.model.state_dict(),
             'optimizer': self.optimizer.state_dict(),
         }, is_best=False, filename=os.path.join(self.writer.log_dir, checkpoint_name))
-        logging.info(f"Model checkpoint and metadata has been saved at {self.writer.log_dir}.")"""
+        logging.info(f"Model checkpoint and metadata has been saved at {self.writer.log_dir}.")

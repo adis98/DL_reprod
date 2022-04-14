@@ -74,13 +74,10 @@ def main():
         train_dataset, batch_size=args.batch_size, shuffle=True,
         num_workers=args.workers, pin_memory=True, drop_last=True)
 
-    # os.environ["PYTORCH_CUDA_ALLOC_CONF"]='max_split_size_mb:64'
-    # model = ResNetSimCLR(base_model=args.arch, out_dim=args.out_dim)
-    model = res.resnet50x1()
+    # model = ResNetSimCLR(base_model=args.arch, out_dim=args.out_dim)  FOR RESNET18
+    model = res.resnet50x1() #FOR RESNET50x1. CHANGE TO resnet50x4 for the wider model
 
-    #ckp_path = 'C:/Users/adity/Documents/Course_stuff/Deep Learning/project/sthalles_simclr/SimCLR/runs/Mar16_14-04-02_LAPTOP-24AE201Q/checkpoint_0050.pth.tar'
-    #ckp_path = 'C:/Users/adity/Documents/Course_stuff/Deep Learning/project/PyTorch_checkpoints/resnet_50_1x.pth'
-    ckp_path = 'C:/Users/adity/Documents/Course_stuff/Deep Learning/project/PyTorch_checkpoints/resnet50_1x_50_epochs_finetuned/checkpoint_0050.pth.tar'
+    ckp_path = 'PATH_TO_CHECKPOINT' #insert the path to the checkpoint file after downloading. See the README for details
     #print(torch.cuda.is_available())
     sd = torch.load(ckp_path, map_location='cpu')
     #model.load_state_dict(sd['state_dict'])
